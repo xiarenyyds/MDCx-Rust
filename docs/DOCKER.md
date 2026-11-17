@@ -9,7 +9,7 @@
 正式版使用固定版本标签：
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.0
+docker pull xrbzy/mdcx-rust:0.1.1
 ```
 
 也可使用 `xrbzy/mdcx-rust:latest` 跟随最新正式版。拉取镜像只下载文件，启动后才能使用。
@@ -21,7 +21,7 @@ docker pull xrbzy/mdcx-rust:0.1.0
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.0
+    image: xrbzy/mdcx-rust:0.1.1
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -50,7 +50,7 @@ docker compose up -d
 
 ## Unraid
 
-在 Docker 模板中选择镜像 `xrbzy/mdcx-rust:0.1.0`，网络使用 bridge。Web 端口容器侧为 `8080`，宿主机可填写 `38888`；WebUI 地址填写 `http://[IP]:[PORT:8080]`。
+在 Docker 模板中选择镜像 `xrbzy/mdcx-rust:0.1.1`，网络使用 bridge。Web 端口容器侧为 `8080`，宿主机可填写 `38888`；WebUI 地址填写 `http://[IP]:[PORT:8080]`。
 
 | 模板项目 | 示例 |
 | --- | --- |

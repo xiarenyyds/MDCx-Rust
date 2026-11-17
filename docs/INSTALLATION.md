@@ -1,4 +1,4 @@
-# MDCx-Rust v0.1.0 安装与使用
+# MDCx-Rust 安装与使用
 
 从 [最新发布](https://github.com/xiarenyyds/MDCx-Rust/releases/latest) 下载对应平台的完整压缩包，解压后保留内部目录结构。
 
@@ -46,10 +46,10 @@ MDCX_MEDIA_ROOTS='/实际媒体目录' sh start.sh
 
 镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
 
-镜像 `xrbzy/mdcx-rust:0.1.0` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+镜像 `xrbzy/mdcx-rust:0.1.1` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.0
+docker pull xrbzy/mdcx-rust:0.1.1
 ```
 
 将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
@@ -57,7 +57,7 @@ docker pull xrbzy/mdcx-rust:0.1.0
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.0
+    image: xrbzy/mdcx-rust:0.1.1
     restart: unless-stopped
     ports:
       - "8080:8080"
