@@ -46,10 +46,10 @@ MDCX_MEDIA_ROOTS='/实际媒体目录' sh start.sh
 
 镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
 
-镜像 `xrbzy/mdcx-rust:0.1.1` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+镜像 `xrbzy/mdcx-rust:0.1.2` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.1
+docker pull xrbzy/mdcx-rust:0.1.2
 ```
 
 将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
@@ -57,7 +57,7 @@ docker pull xrbzy/mdcx-rust:0.1.1
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.1
+    image: xrbzy/mdcx-rust:0.1.2
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -103,4 +103,4 @@ services:
 Linux 可在安装包与 `SHA256SUMS.txt` 所在目录运行 `sha256sum -c SHA256SUMS.txt`；macOS 使用 `shasum -a 256 -c SHA256SUMS.txt`。
 Windows 可用 PowerShell 的 `Get-FileHash 文件名 -Algorithm SHA256` 与清单对照。
 
-[返回首页](../README.md) · [更新日志](../CHANGELOG.md) · [TG 交流群](https://t.me/mdcx_rust)
+[返回首页](../README.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases) · [TG 交流群](https://t.me/mdcx_rust)

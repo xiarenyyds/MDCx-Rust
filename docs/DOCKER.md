@@ -9,7 +9,7 @@
 正式版使用固定版本标签：
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.1
+docker pull xrbzy/mdcx-rust:0.1.2
 ```
 
 也可使用 `xrbzy/mdcx-rust:latest` 跟随最新正式版。拉取镜像只下载文件，启动后才能使用。
@@ -21,7 +21,7 @@ docker pull xrbzy/mdcx-rust:0.1.1
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.1
+    image: xrbzy/mdcx-rust:0.1.2
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -47,31 +47,6 @@ docker compose up -d
 登录信息保存在当前标签页，刷新后自动验证并恢复主页；令牌失效时返回登录页，临时断网保留登录信息，关闭标签页后清除。
 
 容器默认以 UID/GID `1000:1000` 运行，配置和媒体目录都需要对该用户可读写。如需使用其他用户，在 `mdcx` 服务下增加 `user: "实际UID:实际GID"`。
-
-## Unraid
-
-在 Docker 模板中选择镜像 `xrbzy/mdcx-rust:0.1.1`，网络使用 bridge。Web 端口容器侧为 `8080`，宿主机可填写 `38888`；WebUI 地址填写 `http://[IP]:[PORT:8080]`。
-
-| 模板项目 | 示例 |
-| --- | --- |
-| 配置路径 | `/mnt/user/appdata/mdcx-rust` → `/config`，读写 |
-| 媒体路径 | `/mnt/user/media` → `/media`，读写 |
-| 访问令牌变量名 | `MDCX_SERVER_TOKEN`，名称前后不要有空格 |
-| 额外参数 | `--user 99:100`，适用于使用 nobody:users 的共享目录 |
-
-镜像默认用户为 `1000:1000`，不会自动修改宿主机目录所有者。Unraid 共享目录若归 `nobody:users`（通常为 `99:100`）所有，可通过上面的额外参数使用相同身份；自定义目录权限时应填写实际 UID/GID。`PUID`、`PGID` 环境变量不会改变本镜像的运行用户。
-
-若日志显示“后台启动失败：Permission denied (os error 13)”，先停止容器，再在 Unraid 终端修正**配置目录**的所有者和所有者读写权限。以下路径按实际配置修改：
-
-```sh
-mkdir -p /mnt/user/appdata/mdcx-rust
-chown -R 99:100 /mnt/user/appdata/mdcx-rust
-chmod -R u+rwX /mnt/user/appdata/mdcx-rust
-```
-
-在容器模板“高级视图 → 额外参数”填写 `--user 99:100`，应用并重新创建容器。配置路径、已有子目录及媒体目录都必须允许该用户访问；写入 NFO 和图片还需媒体目录的写权限。修正配置目录不需要递归修改整个媒体库。
-
-若媒体助手也需对接 Emby，再添加容器端口 `13114`。Web 登录使用 `MDCX_SERVER_TOKEN`，媒体助手令牌在网页中另行生成。
 
 ## 目录与设置
 
@@ -128,4 +103,4 @@ docker compose up -d
 
 更新前停止任务并备份配置目录。固定版本部署先修改 `image` 为目标版本；使用 `latest` 时无需改标签，再执行 `docker compose pull` 和 `docker compose up -d`。保留原有配置及媒体挂载，配置和数据库会继续使用。停止或移除容器不会删除宿主机挂载目录。
 
-[主程序首页](https://github.com/xiarenyyds/MDCx-Rust) · [安装与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/INSTALLATION.md) · [更新日志](../CHANGELOG.md)
+[主程序首页](https://github.com/xiarenyyds/MDCx-Rust) · [安装与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/INSTALLATION.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases)
