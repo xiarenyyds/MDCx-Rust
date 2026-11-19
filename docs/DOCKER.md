@@ -9,7 +9,7 @@
 正式版使用固定版本标签：
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.2
+docker pull xrbzy/mdcx-rust:0.1.3
 ```
 
 也可使用 `xrbzy/mdcx-rust:latest` 跟随最新正式版。拉取镜像只下载文件，启动后才能使用。
@@ -21,7 +21,7 @@ docker pull xrbzy/mdcx-rust:0.1.2
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.2
+    image: xrbzy/mdcx-rust:0.1.3
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -29,9 +29,10 @@ services:
       # - "13114:13114"
     environment:
       TZ: Asia/Shanghai
+      MDCX_RUST_DATA_DIR: /data
       MDCX_SERVER_TOKEN: "replace-with-your-random-token-at-least-16-characters"
     volumes:
-      - /你的配置目录:/config
+      - /你的数据目录:/data
       - /你的媒体目录:/media
 ```
 
@@ -52,10 +53,14 @@ docker compose up -d
 
 | 宿主机挂载 | 容器内路径 | 用途 |
 | --- | --- | --- |
-| 配置目录 | `/config` | 持久保存配置、数据库、任务状态和日志 |
+| 数据目录 | `/data` | 持久保存配置、数据库、任务状态和日志 |
 | 媒体目录 | `/media` | 读取媒体，并写入 NFO、封面等文件 |
 
 网页中填写容器内路径，例如 `/media/movies`，而非宿主机原路径。首次使用选择媒体目录，配置网站、优先级、代理、Cookie 和 API 令牌，再保存设置。
+
+主配置保存在 `/data/config/config.json`，其他配置方案保存在 `/data/config/方案名.json`；数据库、日志和缓存也位于 `/data` 下。保存或另存配置不要求配置中记录的媒体目录当前可用，实际业务操作仍检查媒体目录。
+
+旧镜像默认使用 `/config` 作为主数据目录。将原有宿主机数据目录改为挂载到 `/data`，并按上面的示例设置 `MDCX_RUST_DATA_DIR: /data`，即可继续使用原配置及数据库，无需移动其内部文件。
 
 多个媒体目录可分别挂载到 `/media/movies`、`/media/series` 等子目录。若挂载到 `/movies`、`/series` 等其他位置，还需在 `environment` 中设置 `MDCX_MEDIA_ROOTS: "/movies;/series"`，多个根目录用分号分隔。
 
@@ -67,7 +72,7 @@ docker compose up -d
 | `MDCX_MEDIA_ROOTS` | `/media`，多个可操作媒体根目录用分号分隔 |
 | `TZ` | `Asia/Shanghai` |
 | `MDCX_BIND` | `0.0.0.0:8080`，通常无需修改 |
-| `MDCX_RUST_DATA_DIR` | `/config`，与配置挂载目录保持一致 |
+| `MDCX_RUST_DATA_DIR` | `/data`，与数据挂载目录保持一致 |
 
 未设置访问令牌时，后台自动生成并保存到配置目录的 `runtime/server-token` 文件中，可从宿主机读取。
 
