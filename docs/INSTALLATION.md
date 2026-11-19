@@ -1,20 +1,20 @@
 # MDCx-Rust 安装与使用
 
-从 [最新发布](https://github.com/xiarenyyds/MDCx-Rust/releases/latest) 下载对应平台的完整压缩包，解压后保留内部目录结构。
+从 [最新发布](https://github.com/xiarenyyds/MDCx-Rust/releases/latest) 下载对应平台的压缩包。解压后进入与压缩包同名的文件夹，运行其中同名程序，名称及大小写一致；Windows 为 `.exe`，macOS 为 `.app`。首次运行在该文件夹内创建 `data` 目录，移动时将整个文件夹一起移动。
 
 ## Windows 桌面版
 
-适用于 Windows x64。解压后运行 `mdcx-rust.exe`，不要单独移动 EXE 或删除旁边的 DLL、data 等目录。
+适用于 Windows x64。解压后进入 `MDCx-Rust-v0.1.3-windows-x64`，运行 `MDCx-Rust-v0.1.3-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 原生 Cookie 登录窗口需要 Microsoft Edge WebView2 Runtime。
 
 ## macOS 桌面版
 
-提供 Apple 芯片（arm64）和 Intel 芯片（x64）两个安装包，最低 macOS 12。按设备芯片选择安装包，解压后将 `mdcx-rust.app` 移入“应用程序”再启动。
+提供 Apple 芯片（arm64）和 Intel 芯片（x64）两个安装包，最低 macOS 12。按设备芯片选择安装包，解压后进入同名文件夹，启动其中同名 `.app`。首次运行在该文件夹内的 `.app` 旁创建 `data`，配置位于 `data/config`，运行依赖保留在 `.app` 内。移动时将整个文件夹一起移动。
 当前使用临时签名，未进行 Apple 公证；若系统阻止打开，核对下载来源后在“系统设置 → 隐私与安全性”允许打开。
 
 ## Linux 桌面版
 
-适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后在 `bundle` 目录运行 `./mdcx-rust`。
+适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.1.3-linux-x64`，运行 `./MDCx-Rust-v0.1.3-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 Ubuntu/Debian 可安装所需运行库：
 
 ```sh
@@ -26,30 +26,31 @@ sudo apt-get install libgtk-3-0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 l
 提供 x64 和 ARM64 两种版本，适用于 glibc Linux（ARM64 最低 Debian 12 或同等运行库）。解压后进入安装目录，执行：
 
 ```sh
-MDCX_MEDIA_ROOTS='/实际媒体目录' sh start.sh
+# x64 示例；ARM64 的文件夹和程序名称将 x64 改为 arm64。
+cd MDCx-Rust-v0.1.3-linux-x64-server
+./MDCx-Rust-v0.1.3-linux-x64-server
 ```
 
 打开 `http://127.0.0.1:8080`，访问令牌读取 `data/runtime/server-token`。
 后台持续在终端运行，关闭网页不会结束任务；按 Ctrl+C 停止后台。
-包内包含网页与 FFprobe，无需安装桌面环境。
+网页与 FFprobe 封装在程序内，首次运行自动释放到 `data` 内的隐藏目录，无需安装桌面环境。
 
 | 环境变量 | 用途 |
 | --- | --- |
-| `MDCX_MEDIA_ROOTS` | 可操作的媒体根目录，多个目录用分号分隔，须已存在 |
-| `MDCX_RUST_DATA_DIR` | 配置目录，默认安装目录下 `data` |
+| `MDCX_RUST_DATA_DIR` | 数据根目录，默认安装目录下 `data`；配置位于其 `config` 子目录 |
 | `MDCX_BIND` | 监听地址，默认 `127.0.0.1:8080`，局域网访问可设 `0.0.0.0:8080` |
 | `MDCX_SERVER_TOKEN` | 自定义访问令牌，至少 16 字符；未设置时自动生成 |
 
-媒体目录需有读写权限。后台以服务方式运行时，请保持环境变量与配置目录固定。
+媒体目录直接在软件中选择，无需额外声明；目录需具有相应的读写权限。后台以服务方式运行时，请保持环境变量与配置目录固定。
 
 ## Docker
 
 镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
 
-镜像 `xrbzy/mdcx-rust:0.1.2` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+镜像 `xrbzy/mdcx-rust:0.1.3` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.2
+docker pull xrbzy/mdcx-rust:0.1.3
 ```
 
 将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
@@ -57,7 +58,7 @@ docker pull xrbzy/mdcx-rust:0.1.2
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.2
+    image: xrbzy/mdcx-rust:0.1.3
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -67,7 +68,7 @@ services:
       TZ: Asia/Shanghai
       MDCX_SERVER_TOKEN: "replace-with-your-random-token-at-least-16-characters"
     volumes:
-      - /你的配置目录:/config
+      - /你的数据目录:/data
       - /你的媒体目录:/media
 ```
 
@@ -79,7 +80,7 @@ services:
 
 选择自己的媒体目录，按影片类型调整网站与字段优先级，按需填写代理、Cookie 和 API 令牌，然后保存设置。
 
-桌面配置目录：macOS 为 `~/Library/Application Support/mdcx-rust`，Windows 为 `%APPDATA%/mdcx-rust`，Linux 为 `${XDG_DATA_HOME:-~/.local/share}/mdcx-rust`。
+桌面与 CLI 默认数据目录均为程序旁的 `data`，macOS 为 `.app` 旁，配置在 `data/config`。可通过 `MDCX_RUST_DATA_DIR` 指定其他数据目录；已有用户资料不会自动迁移。
 
 ## Emby 插件
 
