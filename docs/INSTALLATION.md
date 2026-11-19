@@ -4,7 +4,7 @@
 
 ## Windows 桌面版
 
-适用于 Windows x64。解压后进入 `MDCx-Rust-v0.1.3-windows-x64`，运行 `MDCx-Rust-v0.1.3-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Windows x64。解压后进入 `MDCx-Rust-v0.1.4-windows-x64`，运行 `MDCx-Rust-v0.1.4-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 原生 Cookie 登录窗口需要 Microsoft Edge WebView2 Runtime。
 
 ## macOS 桌面版
@@ -14,7 +14,7 @@
 
 ## Linux 桌面版
 
-适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.1.3-linux-x64`，运行 `./MDCx-Rust-v0.1.3-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.1.4-linux-x64`，运行 `./MDCx-Rust-v0.1.4-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 Ubuntu/Debian 可安装所需运行库：
 
 ```sh
@@ -27,8 +27,8 @@ sudo apt-get install libgtk-3-0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 l
 
 ```sh
 # x64 示例；ARM64 的文件夹和程序名称将 x64 改为 arm64。
-cd MDCx-Rust-v0.1.3-linux-x64-server
-./MDCx-Rust-v0.1.3-linux-x64-server
+cd MDCx-Rust-v0.1.4-linux-x64-server
+./MDCx-Rust-v0.1.4-linux-x64-server
 ```
 
 打开 `http://127.0.0.1:8080`，访问令牌读取 `data/runtime/server-token`。
@@ -47,10 +47,10 @@ cd MDCx-Rust-v0.1.3-linux-x64-server
 
 镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
 
-镜像 `xrbzy/mdcx-rust:0.1.3` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+镜像 `xrbzy/mdcx-rust:0.1.4` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.3
+docker pull xrbzy/mdcx-rust:0.1.4
 ```
 
 将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
@@ -58,7 +58,7 @@ docker pull xrbzy/mdcx-rust:0.1.3
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.3
+    image: xrbzy/mdcx-rust:0.1.4
     restart: unless-stopped
     ports:
       - "8080:8080"

@@ -9,7 +9,7 @@
 正式版使用固定版本标签：
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.3
+docker pull xrbzy/mdcx-rust:0.1.4
 ```
 
 也可使用 `xrbzy/mdcx-rust:latest` 跟随最新正式版。拉取镜像只下载文件，启动后才能使用。
@@ -21,7 +21,7 @@ docker pull xrbzy/mdcx-rust:0.1.3
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.3
+    image: xrbzy/mdcx-rust:0.1.4
     restart: unless-stopped
     ports:
       - "8080:8080"
