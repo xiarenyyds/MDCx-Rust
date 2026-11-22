@@ -2,15 +2,21 @@
 
 镜像仓库：[Docker Hub · xrbzy/mdcx-rust](https://hub.docker.com/r/xrbzy/mdcx-rust)。
 
+本页介绍容器部署、目录挂载和更新。刮削模式、配置方案、离线资料及通知操作见[功能与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/USAGE.md)。
+
 支持 `linux/amd64` 和 `linux/arm64`，适用于对应架构的 Linux 服务器、NAS，以及安装了 Docker 的 Windows、macOS。Docker 自动选择设备架构。镜像已包含 CLI 后台、Web 界面和 FFprobe，无需另行下载程序压缩包或安装桌面环境。
 
 ## 下载镜像
 
 正式版使用固定版本标签：
 
+<!-- release:docker-pull:start -->
+
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.4
+docker pull xrbzy/mdcx-rust:0.2.0
 ```
+
+<!-- release:docker-pull:end -->
 
 也可使用 `xrbzy/mdcx-rust:latest` 跟随最新正式版。拉取镜像只下载文件，启动后才能使用。
 
@@ -18,10 +24,12 @@ docker pull xrbzy/mdcx-rust:0.1.4
 
 先创建用于保存配置的目录，并准备媒体目录。将以下内容保存为 `compose.yaml`，把左侧宿主机目录和访问令牌改成自己的值：
 
+<!-- release:docker-compose:start -->
+
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.4
+    image: xrbzy/mdcx-rust:0.2.0
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -34,6 +42,8 @@ services:
       - /你的数据目录:/data
       - /你的媒体目录:/media
 ```
+
+<!-- release:docker-compose:end -->
 
 在该文件所在目录运行：
 
@@ -57,9 +67,7 @@ docker compose up -d
 
 网页中填写容器内路径，例如 `/media/movies`，而非宿主机原路径。首次使用选择媒体目录，配置网站、优先级、代理、Cookie 和 API 令牌，再保存设置。
 
-镜像默认使用 `/data` 作为数据目录，无需额外设置环境变量。主配置保存在 `/data/config/config.json`，其他配置方案保存在 `/data/config/方案名.json`；数据库、日志和缓存也位于 `/data` 下。保存或另存配置不要求配置中记录的媒体目录当前可用，实际业务操作仍检查媒体目录。
-
-旧镜像默认使用 `/config` 作为主数据目录。将原有宿主机数据目录改为挂载到 `/data`，即可继续使用原配置及数据库，无需移动其内部文件。
+镜像默认使用 `/data` 作为数据目录，无需额外设置环境变量。全局设置保存在 `/data/config/global.json`，默认刮削方案为 `/data/config/config.json`，其他方案为 `/data/config/方案名.json`；数据库、日志和缓存也位于 `/data` 下。保存或另存配置不要求配置中记录的媒体目录当前可用，实际业务操作仍检查媒体目录。
 
 多个媒体目录可分别挂载到 `/media/movies`、`/media/series`，也可直接挂载到 `/movies`、`/series` 等自定义位置。在软件中选择对应的容器内目录即可，无需额外声明媒体根目录；目录是否可读写由挂载方式和容器运行用户的文件权限决定。
 
@@ -71,7 +79,7 @@ docker compose up -d
 | `TZ` | `Asia/Shanghai` |
 | `MDCX_BIND` | `0.0.0.0:8080`，通常无需修改 |
 
-未设置访问令牌时，后台自动生成并保存到配置目录的 `runtime/server-token` 文件中，可从宿主机读取。
+未设置访问令牌时，后台自动生成并保存到 `/data/runtime/server-token`，可从宿主机读取。
 
 ## 连接 Emby 媒体助手
 
@@ -101,8 +109,8 @@ docker compose start
 docker compose up -d
 ```
 
-业务日志也可在网页“日志管理”中查看，文件保存在宿主机配置目录的 `logs/` 下，按 20 MB 分卷并保留 7 天。镜像不包含 Shell，无需进入容器操作。
+业务日志也可在网页“日志管理”中查看，文件保存在宿主机数据目录的 `logs/` 下，按 20 MB 分卷并保留 7 天。镜像不包含 Shell，无需进入容器操作。
 
-更新前停止任务并备份配置目录。固定版本部署先修改 `image` 为目标版本；使用 `latest` 时无需改标签，再执行 `docker compose pull` 和 `docker compose up -d`。保留原有配置及媒体挂载，配置和数据库会继续使用。停止或移除容器不会删除宿主机挂载目录。
+更新前停止任务并备份数据目录。固定版本部署先修改 `image` 为目标版本；使用 `latest` 时无需改标签，再执行 `docker compose pull` 和 `docker compose up -d`。保留原有配置及媒体挂载，配置和数据库会继续使用。停止或移除容器不会删除宿主机挂载目录。
 
-[主程序首页](https://github.com/xiarenyyds/MDCx-Rust) · [安装与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/INSTALLATION.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases)
+[主程序首页](https://github.com/xiarenyyds/MDCx-Rust) · [安装与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/INSTALLATION.md) · [功能与使用](https://github.com/xiarenyyds/MDCx-Rust/blob/main/docs/USAGE.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases)

@@ -1,10 +1,12 @@
 # MDCx-Rust 安装与使用
 
+[Windows](#windows-桌面版) · [macOS](#macos-桌面版) · [Linux 桌面](#linux-桌面版) · [CLI＋Web](#linux-cliweb) · [Docker](#docker) · [数据目录](#数据目录)
+
 从 [最新发布](https://github.com/xiarenyyds/MDCx-Rust/releases/latest) 下载对应平台的压缩包。解压后进入与压缩包同名的文件夹，运行其中同名程序，名称及大小写一致；Windows 为 `.exe`，macOS 为 `.app`。首次运行在该文件夹内创建 `data` 目录，移动时将整个文件夹一起移动。
 
 ## Windows 桌面版
 
-适用于 Windows x64。解压后进入 `MDCx-Rust-v0.1.4-windows-x64`，运行 `MDCx-Rust-v0.1.4-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Windows x64。解压后进入与压缩包同名的文件夹，运行其中同名的 `.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 原生 Cookie 登录窗口需要 Microsoft Edge WebView2 Runtime。
 
 ## macOS 桌面版
@@ -14,7 +16,7 @@
 
 ## Linux 桌面版
 
-适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.1.4-linux-x64`，运行 `./MDCx-Rust-v0.1.4-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入与压缩包同名的文件夹，启动其中同名程序，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 Ubuntu/Debian 可安装所需运行库：
 
 ```sh
@@ -23,12 +25,11 @@ sudo apt-get install libgtk-3-0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 l
 
 ## Linux CLI＋Web
 
-提供 x64 和 ARM64 两种版本，适用于 glibc Linux（ARM64 最低 Debian 12 或同等运行库）。解压后进入安装目录，执行：
+提供 x64 和 ARM64 两种版本，适用于 glibc Linux（ARM64 最低 Debian 12 或同等运行库）。解压后进入与压缩包同名的文件夹，执行：
 
 ```sh
-# x64 示例；ARM64 的文件夹和程序名称将 x64 改为 arm64。
-cd MDCx-Rust-v0.1.4-linux-x64-server
-./MDCx-Rust-v0.1.4-linux-x64-server
+# 在解压后的文件夹内匹配当前版本、当前架构的唯一程序。
+./MDCx-Rust-*-linux-*-server
 ```
 
 打开 `http://127.0.0.1:8080`，访问令牌读取 `data/runtime/server-token`。
@@ -45,63 +46,35 @@ cd MDCx-Rust-v0.1.4-linux-x64-server
 
 ## Docker
 
-镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
+适合在 NAS 或服务器持续运行，通过浏览器使用。镜像包含后台、网页和 FFprobe，支持 AMD64、ARM64，Docker 自动选择对应架构。
 
-镜像 `xrbzy/mdcx-rust:0.1.4` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+使用 `latest` 跟随最新正式版，需要固定版本时按 [Docker 部署](DOCKER.md) 中的示例指定标签：
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.4
+docker pull xrbzy/mdcx-rust:latest
 ```
 
-将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
+完整 Compose、挂载目录、权限、访问令牌及媒体助手连接步骤统一见 [Docker 部署](DOCKER.md)。
 
-```yaml
-services:
-  mdcx:
-    image: xrbzy/mdcx-rust:0.1.4
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-      # 使用媒体助手时取消下一行注释。
-      # - "13114:13114"
-    environment:
-      TZ: Asia/Shanghai
-      MDCX_SERVER_TOKEN: "replace-with-your-random-token-at-least-16-characters"
-    volumes:
-      - /你的数据目录:/data
-      - /你的媒体目录:/media
-```
+## 数据目录
 
-镜像默认以 UID/GID `1000:1000` 运行，请提前创建目录并确保该用户有读写权限；需要时可通过 Compose 的 `user: "UID:GID"` 指定实际用户。浏览器打开 `http://主机地址:8080`，输入设置的令牌。媒体路径填写 `/media/...`。
+桌面与 CLI 默认数据目录均为程序旁的 `data`，macOS 为 `.app` 旁，配置在 `data/config`。可通过 `MDCX_RUST_DATA_DIR` 指定其他数据目录。
 
-媒体助手需在网页中启用监听，监听地址设置为 `0.0.0.0`、端口设置为 `13114`，并映射同一端口。Emby 填写 Docker 主机可达的地址；媒体路径相同且 MDCx 可访问时无需路径映射，不同时再映射到 MDCx 容器内的对应目录（本例为 `/media`）。镜像采用精简运行环境，不包含 Shell；查看日志使用 `docker compose logs`。
-
-## 首次使用
-
-选择自己的媒体目录，按影片类型调整网站与字段优先级，按需填写代理、Cookie 和 API 令牌，然后保存设置。
-
-桌面与 CLI 默认数据目录均为程序旁的 `data`，macOS 为 `.app` 旁，配置在 `data/config`。可通过 `MDCX_RUST_DATA_DIR` 指定其他数据目录；已有用户资料不会自动迁移。
-
-## Emby 插件
-
-主菜单“媒体助手”右上角点击“下载插件”。将下载的 `MediaAssistant.dll` 放入 Emby 插件目录，重启 Emby。
-插件连接地址、令牌与路径映射见 [插件安装说明](https://github.com/xiarenyyds/MediaAssistant/blob/main/docs/INSTALLATION.md)。
-
-## 日志管理与停止任务
-
-“日志管理”按系统、刮削、媒体助手、常用工具、封面洗版及 NFO 批量修改分类查看。后端日志按 20 MB 分卷，保留 7 天；“显示详细日志”切换技术细节。点击“打开”可在文件管理器定位日志文件。
-
-停止刮削后不再派发新任务，已开始的影片会处理完成。媒体助手后端任务的失败原因和重试也在日志管理中查看。
-
-## 数据库
-
-在 Amazon ASIN、演员资料、演员映射或信息映射页面点击“下载”。数据库由 [独立仓库](https://github.com/xiarenyyds/databases) 提供，各页面的下载网址填写对应数据库文件的链接。
-
-首次启动为空库；下载成功后完整替换对应本地库，本地新增、修改和删除结果也会被替换。下载或校验失败保留原库。演员和信息映射共用 `actor-mapping.sqlite3`。
+| 资料 | 位置与用途 |
+| --- | --- |
+| 全局设置 | `data/config/global.json`，保存所有方案共用的设置 |
+| 刮削方案 | `data/config/config.json` 或 `data/config/方案名.json` |
+| 数据库 | `data/database/`，保存影片离线资料、演员及映射等资料 |
+| 日志 | `data/logs/`，按用途分类 |
+| 运行资料 | `data/runtime/`，包含任务、断点及服务端访问令牌 |
 
 ## 下载文件校验
 
 Linux 可在安装包与 `SHA256SUMS.txt` 所在目录运行 `sha256sum -c SHA256SUMS.txt`；macOS 使用 `shasum -a 256 -c SHA256SUMS.txt`。
 Windows 可用 PowerShell 的 `Get-FileHash 文件名 -Algorithm SHA256` 与清单对照。
 
-[返回首页](../README.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases) · [TG 交流群](https://t.me/mdcx_rust)
+## 安装后的操作
+
+完成首次刮削、选择模式、分享配置、使用离线资料以及配置演员管理和通知，见[功能与使用](USAGE.md)。Emby 插件单独从 [MediaAssistant](https://github.com/xiarenyyds/MediaAssistant) 下载并按其文档安装。
+
+[返回首页](../README.md) · [功能与使用](USAGE.md) · [Docker 部署](DOCKER.md) · [更新日志](https://github.com/xiarenyyds/MDCx-Rust/releases)
