@@ -4,7 +4,7 @@
 
 ## Windows 桌面版
 
-适用于 Windows x64。解压后进入 `MDCx-Rust-v0.1.4-windows-x64`，运行 `MDCx-Rust-v0.1.4-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Windows x64。解压后进入 `MDCx-Rust-v0.2.0-windows-x64`，运行 `MDCx-Rust-v0.2.0-windows-x64.exe`；运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 原生 Cookie 登录窗口需要 Microsoft Edge WebView2 Runtime。
 
 ## macOS 桌面版
@@ -14,7 +14,7 @@
 
 ## Linux 桌面版
 
-适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.1.4-linux-x64`，运行 `./MDCx-Rust-v0.1.4-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
+适用于 Ubuntu 22.04 及兼容的较新 x64 Linux 桌面系统。解压后进入 `MDCx-Rust-v0.2.0-linux-x64`，运行 `./MDCx-Rust-v0.2.0-linux-x64`，运行依赖自动释放到该目录下 `data` 内的隐藏目录。
 Ubuntu/Debian 可安装所需运行库：
 
 ```sh
@@ -27,8 +27,8 @@ sudo apt-get install libgtk-3-0 libwebkit2gtk-4.1-0 libayatana-appindicator3-1 l
 
 ```sh
 # x64 示例；ARM64 的文件夹和程序名称将 x64 改为 arm64。
-cd MDCx-Rust-v0.1.4-linux-x64-server
-./MDCx-Rust-v0.1.4-linux-x64-server
+cd MDCx-Rust-v0.2.0-linux-x64-server
+./MDCx-Rust-v0.2.0-linux-x64-server
 ```
 
 打开 `http://127.0.0.1:8080`，访问令牌读取 `data/runtime/server-token`。
@@ -47,10 +47,10 @@ cd MDCx-Rust-v0.1.4-linux-x64-server
 
 镜像下载、完整部署和日常管理步骤见 [Docker 下载与使用](DOCKER.md)。
 
-镜像 `xrbzy/mdcx-rust:0.1.4` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
+镜像 `xrbzy/mdcx-rust:0.2.0` 和 `latest` 支持 AMD64、ARM64，Docker 自动选择对应架构。镜像包含 CLI、网页和 FFprobe。
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.1.4
+docker pull xrbzy/mdcx-rust:0.2.0
 ```
 
 将以下内容保存为 `compose.yaml`，修改目录和令牌后执行 `docker compose up -d`：
@@ -58,7 +58,7 @@ docker pull xrbzy/mdcx-rust:0.1.4
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.1.4
+    image: xrbzy/mdcx-rust:0.2.0
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -80,7 +80,13 @@ services:
 
 选择自己的媒体目录，按影片类型调整网站与字段优先级，按需填写代理、Cookie 和 API 令牌，然后保存设置。
 
-桌面与 CLI 默认数据目录均为程序旁的 `data`，macOS 为 `.app` 旁，配置在 `data/config`。可通过 `MDCX_RUST_DATA_DIR` 指定其他数据目录；已有用户资料不会自动迁移。
+桌面与 CLI 默认数据目录均为程序旁的 `data`，macOS 为 `.app` 旁，配置在 `data/config`。可通过 `MDCX_RUST_DATA_DIR` 指定其他数据目录；已有资料目录不会自动搬迁。
+
+### 配置与升级
+
+全局设置保存在 `data/config/global.json`，默认刮削方案为 `data/config/config.json`，其他方案为 `data/config/方案名.json`。代理、账号、通知、演员管理、常用工具、媒体助手、高级设置和界面偏好全局共用；切换方案只影响刮削与封面洗版设置。支持导入、导出已保存的刮削方案，“恢复默认”仅重置当前方案。
+
+从旧版升级时，先停止任务并备份整个 `data`，将其放到新版程序旁，或通过 `MDCX_RUST_DATA_DIR` 指向原数据目录。首次启动会自动迁移旧配置，原文件备份在 `data/config/.backups/`。使用过界面自定义资料目录的用户需改用环境变量指定原目录；新版不再读取旧的资料目录指针。
 
 ## Emby 插件
 
@@ -89,7 +95,7 @@ services:
 
 ## 日志管理与停止任务
 
-“日志管理”按系统、刮削、媒体助手、常用工具、封面洗版及 NFO 批量修改分类查看。后端日志按 20 MB 分卷，保留 7 天；“显示详细日志”切换技术细节。点击“打开”可在文件管理器定位日志文件。
+“日志管理”按系统、刮削、媒体助手、常用工具、封面洗版、演员管理及 NFO 批量修改分类查看。后端日志按 20 MB 分卷，保留 7 天；“显示详细日志”切换技术细节。点击“打开”可在文件管理器定位日志文件。
 
 停止刮削后不再派发新任务，已开始的影片会处理完成。媒体助手后端任务的失败原因和重试也在日志管理中查看。
 
