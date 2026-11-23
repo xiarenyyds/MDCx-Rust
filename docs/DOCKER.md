@@ -13,7 +13,7 @@
 <!-- release:docker-pull:start -->
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.2.1
+docker pull xrbzy/mdcx-rust:0.2.2
 ```
 
 <!-- release:docker-pull:end -->
@@ -29,7 +29,7 @@ docker pull xrbzy/mdcx-rust:0.2.1
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.2.1
+    image: xrbzy/mdcx-rust:0.2.2
     restart: unless-stopped
     ports:
       - "8080:8080"
