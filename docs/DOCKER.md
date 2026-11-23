@@ -13,7 +13,7 @@
 <!-- release:docker-pull:start -->
 
 ```sh
-docker pull xrbzy/mdcx-rust:0.2.0
+docker pull xrbzy/mdcx-rust:0.2.1
 ```
 
 <!-- release:docker-pull:end -->
@@ -29,7 +29,7 @@ docker pull xrbzy/mdcx-rust:0.2.0
 ```yaml
 services:
   mdcx:
-    image: xrbzy/mdcx-rust:0.2.0
+    image: xrbzy/mdcx-rust:0.2.1
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -54,7 +54,7 @@ docker compose up -d
 
 浏览器打开 `http://主机地址:8080`，输入上面设置的访问令牌。令牌至少 16 个字符；可使用 `openssl rand -hex 32` 生成。关闭网页不会停止刮削，后台由容器继续运行。
 
-登录信息保存在当前标签页，刷新后自动验证并恢复主页；令牌失效时返回登录页，临时断网保留登录信息，关闭标签页后清除。
+登录信息保存在当前浏览器，刷新、关闭标签页或重启浏览器后，访问相同地址即可自动验证并恢复主页；令牌失效时清除保存记录并返回登录页，临时断网保留登录信息。清除该网站数据也会清除登录信息。
 
 容器默认以 UID/GID `1000:1000` 运行，配置和媒体目录都需要对该用户可读写。如需使用其他用户，在 `mdcx` 服务下增加 `user: "实际UID:实际GID"`。
 

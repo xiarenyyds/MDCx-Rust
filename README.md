@@ -27,15 +27,15 @@
 
 <!-- release:downloads:start -->
 
-| 平台 | v0.2.0 下载 |
+| 平台 | v0.2.1 下载 |
 | --- | --- |
-| Windows x64 桌面 | [windows-x64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-windows-x64.zip) |
-| macOS Apple 芯片 | [macos-arm64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-macos-arm64.zip) |
-| macOS Intel | [macos-x64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-macos-x64.zip) |
-| Linux x64 桌面 | [linux-x64.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-linux-x64.tar.gz) |
-| Linux x64 CLI＋Web | [linux-x64-server.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-linux-x64-server.tar.gz) |
-| Linux ARM64 CLI＋Web | [linux-arm64-server.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.0/MDCx-Rust-v0.2.0-linux-arm64-server.tar.gz) |
-| Docker AMD64／ARM64 | [xrbzy/mdcx-rust](https://hub.docker.com/r/xrbzy/mdcx-rust)，标签 `0.2.0` 或 `latest` |
+| Windows x64 桌面 | [windows-x64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-windows-x64.zip) |
+| macOS Apple 芯片 | [macos-arm64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-macos-arm64.zip) |
+| macOS Intel 芯片 | [macos-x64.zip](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-macos-x64.zip) |
+| Linux x64 桌面 | [linux-x64.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-linux-x64.tar.gz) |
+| Linux x64 CLI＋Web | [linux-x64-server.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-linux-x64-server.tar.gz) |
+| Linux ARM64 CLI＋Web | [linux-arm64-server.tar.gz](https://github.com/xiarenyyds/MDCx-Rust/releases/download/v0.2.1/MDCx-Rust-v0.2.1-linux-arm64-server.tar.gz) |
+| Docker AMD64／ARM64 | [xrbzy/mdcx-rust](https://hub.docker.com/r/xrbzy/mdcx-rust)，标签 `0.2.1` 或 `latest` |
 
 <!-- release:downloads:end -->
 
